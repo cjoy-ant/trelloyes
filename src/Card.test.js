@@ -1,5 +1,9 @@
 import React from 'react';
-import reactDOM from 'react-dom';
-import renderer from 'react-test-renderer';
+import ReactDOM from 'react-dom';
 import Card from './Card.js';
 
+it("renders without crashing", () => {
+  const div = document.createElement("div")
+  ReactDOM.render(<Card />, div)
+  ReactDOM.unmountComponentAtNode(div)
+});

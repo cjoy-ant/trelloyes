@@ -21,35 +21,25 @@ function omit(obj, keyToOmit) {
   );
 }
 
-class App extends React.Component {
+class App extends Component {
   state = {
     store: STORE
   };
-
-  //static defaultProps = {
-  //  store: {
-  //    lists: [],
-  //    allCards: {},
-  //  }
-  //};
   
   handleDeleteCard = (cardId) => {
-    console.log('clicked delete card')
-    // when the delete card button is clicked on any card,
-    // remove all instances of that card from state
-    //this.setState({  }
     const { lists, allCards } = this.state.store;
-    const newLists = lists.map(list => ({
-      ...list,
-      cardIds: list.cardIds.filter(id => id !== cardId)
-    }));
 
-    const newCards = omit(allCards, cardId)
+    const newLists = lists.map(list => {
+      list.cardIds = list.cardIds.filter(id => id !== cardId)
+      return list;
+    });   
+
+    delete allCards[cardId]
 
     this.setState({
       store: {
-        lists: newLists,
-        allCards: newCards
+        lists: newLists, 
+        allCards
       }
     })
   };
@@ -59,18 +49,14 @@ class App extends React.Component {
   // information is passed back into App.js
 
   handleAddCard = (listId) => {
-    console.log('clicked add card')
     // when the add random card button is clicked, generate a random card
     // and add it to the state and the appropriate list
     //this.setState({ allCards: newRandomCard })
     const newCard = newRandomCard()
     const newLists = this.state.store.lists.map(list => {
       if (list.id === listId) {
-        return {
-          ...list,
-          cardIds: [...list.cardIds, newCard.id]
+          list.cardIds.push(newCard.id)
         }
-      }
       return list;
     })
 
